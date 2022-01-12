@@ -25,11 +25,11 @@ inner join roles as R on RE.role_id = R.id;
 -- 7. Вывести имена и должность только Java разработчиков.
 select E.employee_name, R.role_name from employees as E
 inner join roles_employee as RE on E.id = RE.employee_id 
-inner join roles as R on RE.role_id = R.id where R.role_name like '%Java developer';
+inner join roles as R on RE.role_id = R.id where R.role_name like '%Java %';
 -- 8. Вывести имена и должность только Python разработчиков.
 select E.employee_name, R.role_name from employees as E
 inner join roles_employee as RE on E.id = RE.employee_id 
-inner join roles as R on RE.role_id = R.id where R.role_name like '%Python developer';
+inner join roles as R on RE.role_id = R.id where R.role_name like '%Python%';
 -- 9. Вывести имена и должность всех QA инженеров.
 select E.employee_name, R.role_name from employees as E
 inner join roles_employee as RE on E.id = RE.employee_id 
@@ -65,19 +65,20 @@ select S.monthly_salary,R.role_name from salary as S
 left outer join employee_salary as ES on S.id = ES.salary_id
 left outer join employees as E on E.id = ES.employee_id 
 left outer join roles_employee as RE on E.id = RE.employee_id
-left outer join roles as R on R.id = RE.role_id where R.role_name like '%Java developer';
+left outer join roles as R on R.id = RE.role_id where R.role_name like '%Java%';
 -- 16. Вывести зарплаты Python разработчиков
 select S.monthly_salary, R.role_name from salary as S
 left outer join employee_salary as ES on S.id = ES.salary_id 
 right outer join employees as E on E.id = ES.employee_id 
 left outer join roles_employee as RE on E.id = RE.employee_id 
-left outer join roles as R on R.id = RE.role_id where R.role_name like '%Python developer';
+left outer join roles as R on R.id = RE.role_id where R.role_name like '%Python%';
 -- 17. Вывести имена и зарплаты Junior Python разработчиков
-select E.employee_name,S.monthly_salary,R.role_name from employees as E
-left outer join employee_salary as ES on E.id = ES.employee_id 
-left outer join salary as S on S.id = ES.salary_id 
-left outer join roles_employee as RE on E.id = RE.employee_id 
-left outer join roles as R on R.id = RE.role_id where R.role_name like 'Junior Python developer';
+select * from employees as E
+inner join roles_employee as RE on E.id = RE.employee_id 
+inner join roles as R on RE.role_id = R.id 
+left outer join employee_salary as ES on ES.employee_id = E.id 
+left outer join salary as S on S.id = ES.salary_id
+where R.role_name like 'Junior Python%';
 --  18. Вывести имена и зарплаты Middle JS разработчиков
 select E.employee_name, S.monthly_salary,R.role_name from employees as E
 left outer join employee_salary as ES on E.id = ES.employee_id 
@@ -131,12 +132,13 @@ inner join roles_employee as RE on R.id = RE.role_id
 where R.role_name like '%QA engineer';
 -- 26. Вывести количество Middle специалистов.
 select count(R.role_name) as Количество_работающих_Middle_специалистов from roles as R 
-left outer join roles_employee as RE on R.id = RE.role_id 
+inner join roles_employee as RE on R.id = RE.role_id 
 where R.role_name like '%Middle%';
 -- 27. Вывести количество разработчиков
 select count(R.role_name) as Количество_разработчиков from roles as R
-left outer join roles_employee as RE on R.id = RE.role_id 
+inner join roles_employee as RE on R.id = RE.role_id 
 where R.role_name like '%developer';
+select * from roles;
 -- 28. Вывести фонд (сумму) зарплаты разработчиков.
 select SUM(S.monthly_salary) as фонд_зп_разработчиков from salary as S
 left outer join employee_salary as ES on S.id = ES.salary_id 
